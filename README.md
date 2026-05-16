@@ -13,12 +13,16 @@ keychain.
 ### As a Claude Code plugin (recommended for agent use)
 
 ```
-/plugin install scalegems/geoagenda-cli
+/plugin marketplace add scalegems/geoagenda-cli
+/plugin install geoagenda-cli@scalegems-geoagenda-cli
 ```
 
-The plugin's `Setup` hook fetches the matching binary from the [latest release](https://github.com/scalegems/geoagenda-cli/releases/latest)
-and installs it under the plugin's `bin/` directory. The plugin also ships a
-skill that teaches the agent how to drive the CLI, plus the slash commands
+The first command registers this repo as a plugin marketplace (Claude Code
+reads [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) at
+the repo root). The second installs the plugin from it. On install, the
+`Setup` hook fetches the matching binary from the [latest release](https://github.com/scalegems/geoagenda-cli/releases/latest)
+into the plugin's `bin/` directory. The plugin also ships a skill that
+teaches the agent how to drive the CLI, plus the slash commands
 `/geoagenda-login`, `/geoagenda-hello`, and `/geoagenda-whoami`.
 
 ### Download a prebuilt binary

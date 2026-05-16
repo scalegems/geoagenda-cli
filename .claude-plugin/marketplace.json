@@ -1,0 +1,13 @@
+{
+  "name": "scalegems-geoagenda-cli",
+  "owner": {
+    "name": "ScaleGems"
+  },
+  "plugins": [
+    {
+      "name": "geoagenda-cli",
+      "source": "./",
+      "description": "CLI for the geoagenda Convex backend, with a skill that teaches your agent how to drive it."
+    }
+  ]
+}
