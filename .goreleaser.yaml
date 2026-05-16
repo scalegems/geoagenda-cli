@@ -43,15 +43,10 @@ snapshot:
   version_template: "{{ incpatch .Version }}-snapshot-{{ .ShortCommit }}"
 
 changelog:
-  use: github
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^chore:"
-      - "^test:"
-      - "^ci:"
-      - "Merge pull request"
+  # github-native delegates to GitHub's "Generate release notes" API, which
+  # renders entries as "* PR title by @username in #N" — no author emails,
+  # ever. Grouping/filtering can be configured via .github/release.yml.
+  use: github-native
 
 release:
   draft: false

@@ -1,5 +1,9 @@
 # geoagenda-cli
 
+[![Latest release](https://img.shields.io/github/v/release/scalegems/geoagenda-cli?display_name=tag&sort=semver&label=release)](https://github.com/scalegems/geoagenda-cli/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Build](https://github.com/scalegems/geoagenda-cli/actions/workflows/build.yml/badge.svg)](https://github.com/scalegems/geoagenda-cli/actions/workflows/build.yml)
+
 Command-line client for the geoagenda Convex backend. Authenticates with WorkOS
 via OAuth 2.0 (PKCE + loopback redirect) and stores credentials in the OS
 keychain.
@@ -12,24 +16,34 @@ keychain.
 /plugin install scalegems/geoagenda-cli
 ```
 
-The plugin's `Setup` hook fetches the matching binary from the latest GitHub
-Release and installs it under the plugin's `bin/` directory. The plugin also
-ships a skill that teaches the agent how to drive the CLI, plus the slash
-commands `/geoagenda-login`, `/geoagenda-hello`, and `/geoagenda-whoami`.
+The plugin's `Setup` hook fetches the matching binary from the [latest release](https://github.com/scalegems/geoagenda-cli/releases/latest)
+and installs it under the plugin's `bin/` directory. The plugin also ships a
+skill that teaches the agent how to drive the CLI, plus the slash commands
+`/geoagenda-login`, `/geoagenda-hello`, and `/geoagenda-whoami`.
 
-### From a release archive
+### Download a prebuilt binary
 
-Download the archive for your OS/arch from the [Releases page](https://github.com/scalegems/geoagenda-cli/releases),
-extract it, and put `geoagenda` somewhere on your `$PATH`.
+All links below are stable — they always redirect to the [latest release](https://github.com/scalegems/geoagenda-cli/releases/latest).
 
-### From source
+| Platform              | Download                                                                                                                  |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| macOS · Apple Silicon | [geoagenda_darwin_arm64.tar.gz](https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_darwin_arm64.tar.gz) |
+| macOS · Intel         | [geoagenda_darwin_amd64.tar.gz](https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_darwin_amd64.tar.gz) |
+| Linux · x86_64        | [geoagenda_linux_amd64.tar.gz](https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_linux_amd64.tar.gz)   |
+| Linux · arm64         | [geoagenda_linux_arm64.tar.gz](https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_linux_arm64.tar.gz)   |
+| Windows · x86_64      | [geoagenda_windows_amd64.zip](https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_windows_amd64.zip)     |
 
-Requires Go 1.22+.
+Verify with [checksums.txt](https://github.com/scalegems/geoagenda-cli/releases/latest/download/checksums.txt),
+then extract and put `geoagenda` somewhere on your `$PATH`. On macOS you may
+need `xattr -d com.apple.quarantine ./geoagenda` the first time.
+
+One-liner for macOS/Linux:
 
 ```sh
-go install github.com/scalegems/geoagenda-cli@latest
-# or, from a clone:
-go build -o geoagenda .
+OS=$(uname -s | tr A-Z a-z) \
+ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') && \
+curl -fsSL "https://github.com/scalegems/geoagenda-cli/releases/latest/download/geoagenda_${OS}_${ARCH}.tar.gz" \
+  | tar -xz -C /usr/local/bin geoagenda
 ```
 
 ## Configure
@@ -61,13 +75,13 @@ Add `--json` to any command for machine-readable output.
 
 ## Exit codes
 
-| Code | Meaning |
-|------|---------|
-| `0`  | success |
-| `1`  | generic failure |
-| `2`  | bad usage / missing config |
-| `4`  | unauthenticated — run `geoagenda login` |
-| `5`  | forbidden |
+| Code | Meaning                                  |
+| ---- | ---------------------------------------- |
+| `0`  | success                                  |
+| `1`  | generic failure                          |
+| `2`  | bad usage / missing config               |
+| `4`  | unauthenticated — run `geoagenda login`  |
+| `5`  | forbidden                                |
 
 ## Storage
 
@@ -79,7 +93,21 @@ memory only.
 - Windows: Credential Manager (DPAPI)
 - Linux: Secret Service (GNOME Keyring, KWallet)
 
-## Release process
+---
+
+## Development
+
+### Build from source
+
+Requires Go 1.22+.
+
+```sh
+go install github.com/scalegems/geoagenda-cli@latest
+# or, from a clone:
+go build -o geoagenda .
+```
+
+### Release process
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) runs GoReleaser
 to cross-compile for `darwin/{amd64,arm64}`, `linux/{amd64,arm64}`, and
