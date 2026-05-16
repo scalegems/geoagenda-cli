@@ -81,17 +81,31 @@ memory only.
 
 ## Release process
 
-Tags matching `v*` trigger [`.github/workflows/release.yml`](.github/workflows/release.yml),
-which runs GoReleaser to cross-compile for `darwin/{amd64,arm64}`,
-`linux/{amd64,arm64}`, and `windows/amd64`, attaches archives + a
-`checksums.txt`, and publishes a GitHub Release.
+[`.github/workflows/release.yml`](.github/workflows/release.yml) runs GoReleaser
+to cross-compile for `darwin/{amd64,arm64}`, `linux/{amd64,arm64}`, and
+`windows/amd64`, attaches archives + a `checksums.txt`, and publishes a
+GitHub Release. Two ways to trigger it:
+
+**Manual (recommended):** GitHub UI → Actions → "release" → "Run workflow",
+pick `patch` / `minor` / `major`, leave `version` blank. The workflow computes
+the next semver from the latest existing tag, creates the tag, pushes it, and
+runs GoReleaser. Or from a terminal:
+
+```sh
+gh workflow run release.yml -f bump=minor
+# explicit version overrides bump
+gh workflow run release.yml -f version=v0.2.0-rc.1
+gh run watch
+```
+
+**Tag push (manual semver):**
 
 ```sh
 git tag v0.1.0
 git push origin v0.1.0
 ```
 
-To dry-run locally:
+**Dry-run locally** (no tag created, no upload):
 
 ```sh
 goreleaser release --snapshot --clean

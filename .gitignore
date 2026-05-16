@@ -1,3 +1,4 @@
-geoagenda
-geoagenda.exe
+/geoagenda
+/geoagenda.exe
 *.test
+dist/
