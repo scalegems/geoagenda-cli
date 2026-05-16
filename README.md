@@ -4,13 +4,31 @@ Command-line client for the geoagenda Convex backend. Authenticates with WorkOS
 via OAuth 2.0 (PKCE + loopback redirect) and stores credentials in the OS
 keychain.
 
-## Build
+## Install
+
+### As a Claude Code plugin (recommended for agent use)
+
+```
+/plugin install scalegems/geoagenda-cli
+```
+
+The plugin's `Setup` hook fetches the matching binary from the latest GitHub
+Release and installs it under the plugin's `bin/` directory. The plugin also
+ships a skill that teaches the agent how to drive the CLI, plus the slash
+commands `/geoagenda-login`, `/geoagenda-hello`, and `/geoagenda-whoami`.
+
+### From a release archive
+
+Download the archive for your OS/arch from the [Releases page](https://github.com/scalegems/geoagenda-cli/releases),
+extract it, and put `geoagenda` somewhere on your `$PATH`.
+
+### From source
 
 Requires Go 1.22+.
 
 ```sh
-cd cli
-go mod tidy
+go install github.com/scalegems/geoagenda-cli@latest
+# or, from a clone:
 go build -o geoagenda .
 ```
 
@@ -60,3 +78,21 @@ memory only.
 - macOS: Keychain
 - Windows: Credential Manager (DPAPI)
 - Linux: Secret Service (GNOME Keyring, KWallet)
+
+## Release process
+
+Tags matching `v*` trigger [`.github/workflows/release.yml`](.github/workflows/release.yml),
+which runs GoReleaser to cross-compile for `darwin/{amd64,arm64}`,
+`linux/{amd64,arm64}`, and `windows/amd64`, attaches archives + a
+`checksums.txt`, and publishes a GitHub Release.
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+To dry-run locally:
+
+```sh
+goreleaser release --snapshot --clean
+```

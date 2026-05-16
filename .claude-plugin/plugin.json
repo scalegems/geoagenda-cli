@@ -1,0 +1,12 @@
+{
+  "name": "geoagenda-cli",
+  "description": "CLI for the geoagenda Convex backend. Handles WorkOS OAuth login and authenticated API calls; teaches the agent how to drive it.",
+  "version": "0.1.0",
+  "author": {
+    "name": "ScaleGems"
+  },
+  "homepage": "https://github.com/scalegems/geoagenda-cli",
+  "repository": "https://github.com/scalegems/geoagenda-cli",
+  "license": "MIT",
+  "keywords": ["geoagenda", "cli", "workos", "oauth", "convex"]
+}
