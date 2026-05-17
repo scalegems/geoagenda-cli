@@ -26,6 +26,7 @@ builds:
 
 archives:
   - id: default
+    builds: [geoagenda]
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     formats: [tar.gz]
     format_overrides:
@@ -34,6 +35,19 @@ archives:
     files:
       - README.md
       - LICENSE*
+
+  # Skill bundle for upload to claude.ai / Claude Cowork / org Skill libraries.
+  # Surfaces with no shell can't run the binary, but they can use the SKILL.md
+  # in advisory mode. Published as a single zip per release.
+  - id: skill
+    meta: true
+    name_template: "geoagenda-skill_{{ .Version }}"
+    formats: [zip]
+    files:
+      - src: skills/geoagenda/SKILL.md
+        dst: SKILL.md
+      - LICENSE
+      - README.md
 
 checksum:
   name_template: "checksums.txt"
